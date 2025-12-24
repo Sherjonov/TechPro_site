@@ -3,174 +3,442 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>TechPro</title>
+  <meta name="description" content="TechPro - Biznesingiz uchun innovatsion web yechimlar" />
+  <title>TechPro | Zamonaviy Web Yechimlar</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    /* Yuklanishni optimallashtirish uchun gradientlarni soddalashtirish */
+    .hero-gradient {
+      background: linear-gradient(135deg, #2563eb 0%, #4f46e5 50%, #db2777 100%);
+    }
+    .cta-gradient {
+      background: linear-gradient(to right, #2563eb, #4338ca);
+    }
+    
+    /* Animatsiyalar */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .fade-in {
+      animation: fadeIn 0.8s ease-out forwards;
+    }
+    
+    /* Scroll uchun silliq o'tish */
+    html {
+      scroll-behavior: smooth;
+    }
+    
+    /* Yuklanish animatsiyasi */
+    .loading-bar {
+      height: 3px;
+      width: 0%;
+      background: linear-gradient(to right, #3b82f6, #8b5cf6);
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 9999;
+      transition: width 0.3s ease;
+    }
+  </style>
 </head>
 
-<body class="bg-white text-gray-800">
+<body class="bg-gray-50 text-gray-800 scroll-smooth">
+  <!-- Yuklanish indikatori -->
+  <div class="loading-bar" id="loadingBar"></div>
 
-<!-- Navbar -->
-<nav class="w-full bg-white shadow-sm fixed top-0 left-0">
-  <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-    <div class="flex items-center gap-2">
-      <div class="w-7 h-7 bg-blue-600 rounded"></div>
-      <span class="font-bold text-xl">TechPro</span>
+  <!-- Navbar -->
+  <header class="w-full bg-white/95 backdrop-blur-md shadow-sm fixed top-0 left-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex justify-between items-center">
+      <a href="#home" class="flex items-center gap-2 focus:outline-none focus:ring-2 focus:ring-blue-500 rounded">
+        <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
+          <i class="fas fa-code text-white text-sm"></i>
+        </div>
+        <span class="font-extrabold text-xl text-gray-900">TechPro</span>
+      </a>
+
+      <!-- Mobil menyu tugmasi -->
+      <button id="mobileMenuButton" class="md:hidden text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 rounded p-1">
+        <i class="fas fa-bars text-xl"></i>
+      </button>
+
+      <!-- Desktop nav -->
+      <nav class="hidden md:flex gap-8 text-sm font-medium">
+        <a href="#home" class="text-gray-700 hover:text-blue-600 transition-colors focus:outline-none focus:text-blue-600">Bosh sahifa</a>
+        <a href="#services" class="text-gray-700 hover:text-blue-600 transition-colors focus:outline-none focus:text-blue-600">Xizmatlar</a>
+        <a href="#portfolio" class="text-gray-700 hover:text-blue-600 transition-colors focus:outline-none focus:text-blue-600">Portfolio</a>
+        <a href="#pricing" class="text-gray-700 hover:text-blue-600 transition-colors focus:outline-none focus:text-blue-600">Narxlar</a>
+        <a href="#blog" class="text-gray-700 hover:text-blue-600 transition-colors focus:outline-none focus:text-blue-600">Blog</a>
+      </nav>
+
+      <button class="hidden md:block bg-blue-600 hover:bg-blue-700 transition-all text-white px-5 py-2.5 rounded-lg font-medium shadow hover:shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+        <i class="fas fa-phone-alt mr-2"></i> Bog‘lanish
+      </button>
     </div>
-
-    <div class="hidden md:flex gap-8 text-sm">
-      <a href="#" class="hover:text-blue-600">Bosh Sahifa</a>
-      <a href="#" class="hover:text-blue-600">Xizmatlar</a>
-      <a href="#" class="hover:text-blue-600">Portfolio</a>
-      <a href="#" class="hover:text-blue-600">Narxlar</a>
-      <a href="#" class="hover:text-blue-600">Blog</a>
-    </div>
-
-    <button class="bg-blue-600 text-white px-4 py-2 rounded">Bog'lanish</button>
-  </div>
-</nav>
-
-<!-- Hero -->
-<section class="pt-32 pb-24 bg-gradient-to-r from-blue-600 to-pink-600 text-white">
-  <div class="max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-10 items-center">
-    <div>
-      <h1 class="text-5xl font-extrabold">Zamonaviy Web <span class="text-yellow-300">Yechimlar</span></h1>
-      <p class="mt-4 text-lg">Biznesingizni keyingi bosqichga olib chiqish uchun innovatsion web yechimlar</p>
-      <div class="mt-6 flex gap-4">
-        <button class="bg-yellow-400 text-black font-semibold px-6 py-3 rounded">Boshlash</button>
-        <button class="border border-white px-6 py-3 rounded">Ko'proq Bilish</button>
+    
+    <!-- Mobil menyu -->
+    <div id="mobileMenu" class="md:hidden hidden bg-white shadow-lg px-4 py-6">
+      <div class="flex flex-col space-y-4">
+        <a href="#home" class="text-gray-700 hover:text-blue-600 transition-colors py-2 border-b border-gray-100">Bosh sahifa</a>
+        <a href="#services" class="text-gray-700 hover:text-blue-600 transition-colors py-2 border-b border-gray-100">Xizmatlar</a>
+        <a href="#portfolio" class="text-gray-700 hover:text-blue-600 transition-colors py-2 border-b border-gray-100">Portfolio</a>
+        <a href="#pricing" class="text-gray-700 hover:text-blue-600 transition-colors py-2 border-b border-gray-100">Narxlar</a>
+        <a href="#blog" class="text-gray-700 hover:text-blue-600 transition-colors py-2">Blog</a>
+        <button class="bg-blue-600 hover:bg-blue-700 transition-all text-white px-5 py-3 rounded-lg font-medium mt-4">
+          <i class="fas fa-phone-alt mr-2"></i> Bog‘lanish
+        </button>
       </div>
     </div>
+  </header>
 
-    <div class="flex justify-center">
-      <div class="w-96 h-56 bg-white/20 backdrop-blur-xl rounded-xl p-5">
-        <div class="bg-white rounded-xl p-6 shadow">
-          <div class="flex gap-2 mb-4">
-            <span class="w-3 h-3 bg-red-400 rounded-full"></span>
-            <span class="w-3 h-3 bg-yellow-400 rounded-full"></span>
-            <span class="w-3 h-3 bg-green-400 rounded-full"></span>
+  <!-- Hero -->
+  <section id="home" class="pt-28 pb-20 md:pt-36 md:pb-28 hero-gradient text-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 grid md:grid-cols-2 gap-12 items-center fade-in">
+      <div>
+        <h1 class="text-4xl sm:text-5xl md:text-6xl font-extrabold leading-tight">
+          Zamonaviy Web <span class="text-yellow-300 block md:inline">Yechimlar</span>
+        </h1>
+        <p class="mt-6 text-lg text-white/90 max-w-xl">
+          Biznesingizni keyingi bosqichga olib chiqish uchun innovatsion web yechimlar. 5+ yillik tajriba va 150+ muvaffaqiyatli loyiha.
+        </p>
+        <div class="mt-8 flex flex-wrap gap-4">
+          <button class="bg-yellow-400 hover:bg-yellow-300 transition-all text-gray-900 font-semibold px-6 py-3 rounded-lg shadow hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-offset-2">
+            <i class="fas fa-rocket mr-2"></i> Boshlash
+          </button>
+          <button class="border border-white/70 hover:bg-white/10 transition-all px-6 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2">
+            <i class="fas fa-info-circle mr-2"></i> Ko‘proq bilish
+          </button>
+        </div>
+        
+        <!-- Ish jarayoni tezligi ko'rsatgichi -->
+        <div class="mt-10 bg-white/10 backdrop-blur-sm rounded-xl p-5 max-w-md">
+          <div class="flex justify-between mb-2">
+            <span class="text-sm">Loyihalar tezligi</span>
+            <span class="text-sm font-bold">90%</span>
           </div>
+          <div class="w-full bg-white/20 rounded-full h-2.5">
+            <div class="bg-yellow-400 h-2.5 rounded-full" style="width: 90%"></div>
+          </div>
+        </div>
+      </div>
 
-          <div class="space-y-3">
-            <div class="h-3 bg-gray-200 rounded w-5/6"></div>
-            <div class="h-3 bg-gray-200 rounded w-4/6"></div>
-            <div class="h-3 bg-gray-200 rounded w-3/6"></div>
-            <div class="h-3 bg-gray-200 rounded w-4/6"></div>
+      <div class="flex justify-center mt-10 md:mt-0">
+        <div class="w-full max-w-md bg-white/20 backdrop-blur-xl rounded-2xl p-6 shadow-2xl transform hover:scale-[1.02] transition-transform">
+          <div class="bg-white rounded-xl p-6 shadow-xl">
+            <div class="flex gap-2 mb-4">
+              <span class="w-3 h-3 bg-red-400 rounded-full"></span>
+              <span class="w-3 h-3 bg-yellow-400 rounded-full"></span>
+              <span class="w-3 h-3 bg-green-400 rounded-full"></span>
+            </div>
+            <div class="space-y-3">
+              <div class="h-3 bg-gray-200 rounded w-5/6 animate-pulse"></div>
+              <div class="h-3 bg-gray-200 rounded w-4/6 animate-pulse"></div>
+              <div class="h-3 bg-gray-200 rounded w-3/6 animate-pulse"></div>
+              <div class="h-3 bg-gray-200 rounded w-4/6 animate-pulse"></div>
+            </div>
+            <div class="mt-6 grid grid-cols-3 gap-4">
+              <div class="h-16 bg-blue-50 rounded-lg flex items-center justify-center">
+                <i class="fas fa-code text-blue-600 text-xl"></i>
+              </div>
+              <div class="h-16 bg-green-50 rounded-lg flex items-center justify-center">
+                <i class="fas fa-mobile-alt text-green-600 text-xl"></i>
+              </div>
+              <div class="h-16 bg-purple-50 rounded-lg flex items-center justify-center">
+                <i class="fas fa-cloud text-purple-600 text-xl"></i>
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </div>
+  </section>
 
-  </div>
-</section>
-
-<!-- Xizmatlar -->
-<section class="py-20">
-  <div class="text-center mb-12">
-    <h2 class="text-3xl font-bold">Bizning Xizmatlar</h2>
-    <p class="mt-2 text-gray-600">Eng zamonaviy texnologiyalar bilan mukammal yechimlar</p>
-  </div>
-
-  <div class="max-w-7xl mx-auto px-6 grid md:grid-cols-3 gap-8">
-    <div class="shadow p-8 rounded-xl">
-      <div class="w-12 h-12 bg-blue-100 rounded mb-4"></div>
-      <h3 class="font-bold text-xl mb-2">Web Dasturlash</h3>
-      <p class="text-gray-600">Tez va samarali web ilovalar yaratamiz</p>
+  <!-- Xizmatlar -->
+  <section id="services" class="py-20 bg-white">
+    <div class="text-center mb-14 fade-in">
+      <h2 class="text-3xl md:text-4xl font-bold">Bizning xizmatlar</h2>
+      <p class="mt-3 text-gray-600 max-w-2xl mx-auto px-4">
+        Eng zamonaviy texnologiyalar bilan mukammal yechimlar. Har bir loyiha individual yondashuv bilan ishlanadi.
+      </p>
     </div>
 
-    <div class="shadow p-8 rounded-xl">
-      <div class="w-12 h-12 bg-green-100 rounded mb-4"></div>
-      <h3 class="font-bold text-xl mb-2">Mobil Ilovalar</h3>
-      <p class="text-gray-600">iOS & Android uchun ilovalar</p>
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 grid md:grid-cols-3 gap-8">
+      <div class="p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all bg-white border border-gray-100 hover:-translate-y-2">
+        <div class="w-14 h-14 bg-blue-100 rounded-xl mb-6 flex items-center justify-center">
+          <i class="fas fa-code text-blue-600 text-2xl"></i>
+        </div>
+        <h3 class="font-bold text-xl mb-3">Web dasturlash</h3>
+        <p class="text-gray-600 mb-5">React, Vue.js, Next.js kabi zamonaviy texnologiyalar yordamida tez va samarali web ilovalar yaratamiz.</p>
+        <a href="#" class="text-blue-600 font-medium flex items-center">
+          Batafsil <i class="fas fa-arrow-right ml-2 text-sm"></i>
+        </a>
+      </div>
+
+      <div class="p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all bg-white border border-gray-100 hover:-translate-y-2">
+        <div class="w-14 h-14 bg-green-100 rounded-xl mb-6 flex items-center justify-center">
+          <i class="fas fa-mobile-alt text-green-600 text-2xl"></i>
+        </div>
+        <h3 class="font-bold text-xl mb-3">Mobil ilovalar</h3>
+        <p class="text-gray-600 mb-5">React Native va Flutter yordamida iOS va Android uchun zamonaviy, tezkor va samarali ilovalar.</p>
+        <a href="#" class="text-blue-600 font-medium flex items-center">
+          Batafsil <i class="fas fa-arrow-right ml-2 text-sm"></i>
+        </a>
+      </div>
+
+      <div class="p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all bg-white border border-gray-100 hover:-translate-y-2">
+        <div class="w-14 h-14 bg-purple-100 rounded-xl mb-6 flex items-center justify-center">
+          <i class="fas fa-cloud text-purple-600 text-2xl"></i>
+        </div>
+        <h3 class="font-bold text-xl mb-3">Bulut yechimlar</h3>
+        <p class="text-gray-600 mb-5">AWS, Azure va Google Cloud asosidagi tizimlar, migratsiya, optimallashtirish va xavfsizlik yechimlari.</p>
+        <a href="#" class="text-blue-600 font-medium flex items-center">
+          Batafsil <i class="fas fa-arrow-right ml-2 text-sm"></i>
+        </a>
+      </div>
     </div>
+  </section>
 
-    <div class="shadow p-8 rounded-xl">
-      <div class="w-12 h-12 bg-purple-100 rounded mb-4"></div>
-      <h3 class="font-bold text-xl mb-2">Bulut Yechimlar</h3>
-      <p class="text-gray-600">AWS va Azure asosidagi tizimlar</p>
+  <!-- Statistikalar -->
+  <section class="bg-[#0d1125] text-white py-16">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+      <div class="fade-in">
+        <p class="text-4xl font-extrabold text-yellow-300">150+</p>
+        <p class="text-white/80 mt-2">Muvaffaqiyatli loyihalar</p>
+      </div>
+      <div class="fade-in" style="animation-delay: 0.2s">
+        <p class="text-4xl font-extrabold text-yellow-300">98%</p>
+        <p class="text-white/80 mt-2">Mamnun mijozlar</p>
+      </div>
+      <div class="fade-in" style="animation-delay: 0.4s">
+        <p class="text-4xl font-extrabold text-yellow-300">5+</p>
+        <p class="text-white/80 mt-2">Yillik tajriba</p>
+      </div>
+      <div class="fade-in" style="animation-delay: 0.6s">
+        <p class="text-4xl font-extrabold text-yellow-300">24/7</p>
+        <p class="text-white/80 mt-2">Qo‘llab-quvvatlash</p>
+      </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- Statistikalar -->
-<section class="bg-[#0d1125] text-white py-16">
-  <div class="max-w-7xl mx-auto px-6 grid grid-cols-4 text-center">
-    <div><p class="text-4xl font-bold text-yellow-300">150+</p><p>Loyihalar</p></div>
-    <div><p class="text-4xl font-bold text-yellow-300">98%</p><p>Mamnun mijozlar</p></div>
-    <div><p class="text-4xl font-bold text-yellow-300">5+</p><p>Tajriba</p></div>
-    <div><p class="text-4xl font-bold text-yellow-300">24/7</p><p>Qo'llab-quvvatlash</p></div>
-  </div>
-</section>
-
-<!-- Loyihalar -->
-<section class="py-20">
-  <div class="text-center mb-12">
-    <h2 class="text-3xl font-bold">Bizning Loyihalar</h2>
-  </div>
-
-  <div class="max-w-5xl mx-auto px-6 flex justify-center gap-10">
-    <div class="w-64 h-40 rounded-xl shadow bg-gradient-to-r from-purple-400 to-blue-400"></div>
-    <div class="w-64 h-40 rounded-xl shadow bg-gradient-to-r from-green-400 to-blue-400"></div>
-    <div class="w-64 h-40 rounded-xl shadow bg-gradient-to-r from-pink-400 to-purple-400"></div>
-  </div>
-</section>
-
-<!-- Sharhlar -->
-<section class="py-20 bg-gray-50">
-  <div class="text-center mb-12">
-    <h2 class="text-3xl font-bold">Mijozlar Fikrlari</h2>
-  </div>
-
-  <div class="max-w-5xl mx-auto px-6 flex justify-center gap-10">
-    <div class="w-64 h-40 bg-white rounded-xl shadow"></div>
-    <div class="w-64 h-40 bg-white rounded-xl shadow"></div>
-    <div class="w-64 h-40 bg-white rounded-xl shadow"></div>
-  </div>
-</section>
-
-<!-- CTA -->
-<section class="py-20 bg-blue-700 text-white text-center">
-  <h2 class="text-3xl font-bold mb-4">Loyihangizni Boshlaymizmi?</h2>
-  <p class="mb-6">Biz bilan bog'laning</p>
-  <div class="flex justify-center gap-4">
-    <button class="bg-white text-blue-700 font-semibold px-6 py-3 rounded">Bepul Konsultatsiya</button>
-    <button class="border border-white px-6 py-3 rounded">Loyihani Muhokama Qilish</button>
-  </div>
-</section>
-
-<!-- Footer -->
-<footer class="bg-gray-900 text-gray-300 py-12">
-  <div class="max-w-7xl mx-auto px-6 grid md:grid-cols-4 gap-8">
-    <div>
-      <h3 class="font-bold mb-4">TechPro</h3>
-      <p>Innovatsion texnologik yechimlar</p>
+  <!-- CTA -->
+  <section class="py-20 cta-gradient text-white text-center">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 fade-in">
+      <h2 class="text-3xl md:text-4xl font-bold mb-4">Loyihangizni boshlaymizmi?</h2>
+      <p class="mb-8 text-white/90 max-w-2xl mx-auto">Bugunoq biz bilan bog‘laning va biznesingizni raqamli transformatsiya qiling. Bepul konsultatsiya va loyiha tahlili.</p>
+      <div class="flex flex-col sm:flex-row justify-center gap-4 flex-wrap">
+        <button class="bg-white text-blue-700 font-semibold px-8 py-3.5 rounded-lg hover:bg-gray-100 transition-all shadow hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-blue-700">
+          <i class="fas fa-calendar-check mr-2"></i> Bepul konsultatsiya
+        </button>
+        <button class="border-2 border-white px-8 py-3.5 rounded-lg hover:bg-white/10 transition-all focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-blue-700">
+          <i class="fas fa-comments mr-2"></i> Loyihani muhokama qilish
+        </button>
+      </div>
+      
+      <!-- Tezkor aloqa -->
+      <div class="mt-12 flex flex-wrap justify-center items-center gap-6 text-sm">
+        <div class="flex items-center">
+          <i class="fas fa-phone-alt mr-3 text-yellow-300"></i>
+          <span>+998 90 123 45 67</span>
+        </div>
+        <div class="hidden md:block w-px h-6 bg-white/30"></div>
+        <div class="flex items-center">
+          <i class="fas fa-envelope mr-3 text-yellow-300"></i>
+          <span>info@techpro.uz</span>
+        </div>
+        <div class="hidden md:block w-px h-6 bg-white/30"></div>
+        <div class="flex items-center">
+          <i class="fas fa-clock mr-3 text-yellow-300"></i>
+          <span>Dushanba - Juma, 9:00 - 18:00</span>
+        </div>
+      </div>
     </div>
+  </section>
 
-    <div>
-      <h3 class="font-bold mb-4">Havolalar</h3>
-      <ul class="space-y-2 text-sm">
-        <li>Bosh Sahifa</li>
-        <li>Xizmatlar</li>
-        <li>Portfolio</li>
-      </ul>
+  <!-- Footer -->
+  <footer class="bg-gray-900 text-gray-400 py-14">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 grid md:grid-cols-4 gap-10">
+      <div>
+        <div class="flex items-center gap-2 mb-4">
+          <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
+            <i class="fas fa-code text-white text-sm"></i>
+          </div>
+          <span class="font-extrabold text-xl text-white">TechPro</span>
+        </div>
+        <p class="text-sm">Innovatsion texnologik yechimlar va raqamli transformatsiya bo'yicha yetakchi kompaniya.</p>
+        
+        <!-- Ijtimoiy tarmoqlar -->
+        <div class="flex gap-3 mt-6">
+          <a href="#" class="w-10 h-10 bg-gray-800 hover:bg-blue-600 rounded-full flex items-center justify-center transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <i class="fab fa-telegram"></i>
+          </a>
+          <a href="#" class="w-10 h-10 bg-gray-800 hover:bg-blue-600 rounded-full flex items-center justify-center transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <i class="fab fa-instagram"></i>
+          </a>
+          <a href="#" class="w-10 h-10 bg-gray-800 hover:bg-blue-600 rounded-full flex items-center justify-center transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <i class="fab fa-facebook-f"></i>
+          </a>
+          <a href="#" class="w-10 h-10 bg-gray-800 hover:bg-blue-600 rounded-full flex items-center justify-center transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <i class="fab fa-linkedin-in"></i>
+          </a>
+        </div>
+      </div>
+
+      <div>
+        <h3 class="font-bold text-white mb-4 text-lg">Tezkor havolalar</h3>
+        <ul class="space-y-3 text-sm">
+          <li><a href="#home" class="hover:text-white transition-colors">Bosh sahifa</a></li>
+          <li><a href="#services" class="hover:text-white transition-colors">Xizmatlar</a></li>
+          <li><a href="#portfolio" class="hover:text-white transition-colors">Portfolio</a></li>
+          <li><a href="#pricing" class="hover:text-white transition-colors">Narxlar</a></li>
+          <li><a href="#blog" class="hover:text-white transition-colors">Blog</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h3 class="font-bold text-white mb-4 text-lg">Xizmatlar</h3>
+        <ul class="space-y-3 text-sm">
+          <li><a href="#" class="hover:text-white transition-colors">Web dasturlash</a></li>
+          <li><a href="#" class="hover:text-white transition-colors">Mobil ilovalar</a></li>
+          <li><a href="#" class="hover:text-white transition-colors">Bulut yechimlar</a></li>
+          <li><a href="#" class="hover:text-white transition-colors">UX/UI dizayn</a></li>
+          <li><a href="#" class="hover:text-white transition-colors">Texnik qo'llab-quvvatlash</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h3 class="font-bold text-white mb-4 text-lg">Aloqa</h3>
+        <ul class="space-y-3 text-sm">
+          <li class="flex items-start">
+            <i class="fas fa-map-marker-alt mr-3 mt-1 text-blue-400"></i>
+            <span>Toshkent, Yunusobod tumani, 7-mavze</span>
+          </li>
+          <li class="flex items-center">
+            <i class="fas fa-phone-alt mr-3 text-blue-400"></i>
+            <span>+998 90 123 45 67</span>
+          </li>
+          <li class="flex items-center">
+            <i class="fas fa-envelope mr-3 text-blue-400"></i>
+            <span>info@techpro.uz</span>
+          </li>
+          <li class="flex items-center">
+            <i class="fas fa-clock mr-3 text-blue-400"></i>
+            <span>Ish vaqti: 9:00 - 18:00</span>
+          </li>
+        </ul>
+      </div>
     </div>
-
-    <div>
-      <h3 class="font-bold mb-4">Xizmatlar</h3>
-      <ul class="text-sm">
-        <li>Web Dasturlash</li>
-        <li>Mobil Ilovalar</li>
-        <li>Bulut Yechimlar</li>
-      </ul>
+    
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 mt-12 pt-8 border-t border-gray-800 text-center text-sm">
+      <p>&copy; 2023 TechPro. Barcha huquqlar himoyalangan.</p>
     </div>
+  </footer>
 
-    <div>
-      <h3 class="font-bold mb-4">Aloqa</h3>
-      <p>Toshkent, Yunusobod</p>
-      <p>+998 90 123 45 67</p>
-      <p>info@techpro.uz</p>
-    </div>
-  </div>
-</footer>
+  <!-- Yuqoriga qaytish tugmasi -->
+  <button id="scrollToTop" class="fixed bottom-6 right-6 w-12 h-12 bg-blue-600 text-white rounded-full shadow-lg hover:bg-blue-700 transition-all hidden items-center justify-center focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 z-40">
+    <i class="fas fa-arrow-up"></i>
+  </button>
 
+  <script>
+    // Yuklanish indikatori
+    window.addEventListener('load', function() {
+      document.getElementById('loadingBar').style.width = '100%';
+      setTimeout(() => {
+        document.getElementById('loadingBar').style.opacity = '0';
+      }, 300);
+    });
+
+    // Mobil menyu
+    const mobileMenuButton = document.getElementById('mobileMenuButton');
+    const mobileMenu = document.getElementById('mobileMenu');
+    
+    if (mobileMenuButton && mobileMenu) {
+      mobileMenuButton.addEventListener('click', function() {
+        mobileMenu.classList.toggle('hidden');
+      });
+      
+      // Tashqariga bosilganda menyuni yopish
+      document.addEventListener('click', function(event) {
+        if (!mobileMenu.contains(event.target) && !mobileMenuButton.contains(event.target)) {
+          mobileMenu.classList.add('hidden');
+        }
+      });
+    }
+
+    // Yuqoriga qaytish tugmasi
+    const scrollToTopButton = document.getElementById('scrollToTop');
+    
+    window.addEventListener('scroll', function() {
+      if (window.scrollY > 300) {
+        scrollToTopButton.classList.remove('hidden');
+        scrollToTopButton.classList.add('flex');
+      } else {
+        scrollToTopButton.classList.add('hidden');
+        scrollToTopButton.classList.remove('flex');
+      }
+      
+      // Yuklanish indikatori
+      const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+      const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      const scrolled = (winScroll / height) * 100;
+      document.getElementById('loadingBar').style.width = scrolled + "%";
+    });
+    
+    if (scrollToTopButton) {
+      scrollToTopButton.addEventListener('click', function() {
+        window.scrollTo({
+          top: 0,
+          behavior: 'smooth'
+        });
+      });
+    }
+
+    // Silliq scroll
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        
+        const targetId = this.getAttribute('href');
+        if (targetId === '#') return;
+        
+        const targetElement = document.querySelector(targetId);
+        if (targetElement) {
+          window.scrollTo({
+            top: targetElement.offsetTop - 80,
+            behavior: 'smooth'
+          });
+          
+          // Mobil menyuni yopish
+          if (mobileMenu && !mobileMenu.classList.contains('hidden')) {
+            mobileMenu.classList.add('hidden');
+          }
+        }
+      });
+    });
+
+    // Fade-in animatsiyalari
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.style.opacity = '1';
+          entry.target.style.transform = 'translateY(0)';
+        }
+      });
+    }, observerOptions);
+
+    // Fade-in elementlarini kuzatish
+    document.querySelectorAll('.fade-in').forEach(el => {
+      el.style.opacity = '0';
+      el.style.transform = 'translateY(20px)';
+      el.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+      observer.observe(el);
+    });
+  </script>
 </body>
 </html>
